@@ -1,0 +1,9 @@
+
+nohup /orainst/oradbinst -node l109024,l109025 -vers 121020 -type RAC -racip 10.200.109.211,10.200.109.212,10.200.109.213 > /tmp/log 2>&1 &
+nohup /orainst/oradbinst -node a109070,a109080 -vers 121020 -type RAC -racip 10.200.109.214,10.200.109.215,10.200.109.216 > /tmp/log 2>&1 &
+7100-04-01-1543
+nohup /orainst/oradbinst -node l109024,l109025 -vers 112040 -type RAC -racip 10.200.109.211,10.200.109.212,10.200.109.213 > /tmp/log 2>&1 &
+nohup /orainst/oradbinst -node l111029,l111030 -vers 121020 -type RAC -racip 10.200.111.221,10.200.111.222,10.200.111.223 -step 1 > /tmp/log 2>&1 &
+nohup /orainst/oradbinst -node l109024,l109025 -vers 121020 -type RAC -racip 10.200.109.211,10.200.109.212,10.200.109.213 -storagetype ASM:VXVOL > /tmp/log 2>&1 &
+nohup /orainst/oradbinst -node a84vm01,a84vm02 -vers 121020 -type RAC -racip 10.200.110.111,10.200.110.112,10.200.110.113 -step 1 > /tmp/log 2>&1 &
+nohup /orainst/oradbinst -node s111037-gd4,s111038-gd4 -vers 121020 -type RAC -racip 10.200.111.221,10.200.111.222,10.200.111.223 -step 1 > /tmp/log 2>&1 &

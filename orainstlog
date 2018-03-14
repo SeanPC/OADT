@@ -1,0 +1,25 @@
+#!/bin/bash
+opt=$1
+hostname=$2
+step=$3
+if [ "$opt" != "-h" ] || [ -z "$hostname" ]
+then
+	echo "Usage:orainstlog -h HOSTNAME [-p]"
+	exit 1
+fi
+base=/var/orainst/$hostname
+[ -d "$base" ] || (echo "No logs for $hostname";exit 1) || exit 1
+if [ "$step" = "-p" ]
+then
+	file=$base/log.$hostname.part
+else
+	file=$base/log.$hostname
+fi	
+[ -f "$file" ] || (echo "No logs for $hostname";exit 1)|| exit 1
+while true
+do
+	clear
+	echo -e "\n"
+	[ -f $file ] && cat $file
+	sleep 1
+done

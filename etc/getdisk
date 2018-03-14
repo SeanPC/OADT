@@ -1,0 +1,132 @@
+#!/bin/bash
+getDiskSizeDgByVxlist(){
+local a b c b0 node
+node=$1
+$SSH $node "/opt/VRTSsfmh/adm/dclisetup.sh"
+[ $? -ne 0 ] && echo "Failed to execute \"/opt/VRTSsfmh/adm/dclisetup.sh\"" && exit 1
+out=`$SSH $node "/opt/VRTS/bin/vxlist disk"`
+[ $? -ne 0 ] && echo "Failed to execute \"/opt/VRTS/bin/vxlist disk\"" && exit 1
+echo "$out"|grep -v SIZE|awk '{print $2 " " $5 " " $4}'|while read a b c
+do
+        if [[ $b =~ [0-9](m|M|g|G|t|T)$ ]]
+        then
+                b0=`echo $b|sed -r "s/m|M/\/1024/;s/g|G//;s/t|T/*1024/"|bc`
+                echo "$a $b0 $c"
+	else
+		b0=`echo $b/1024|bc`
+		echo "$a $b0 $c"
+        fi
+done
+}
+getDiskSizeDgByVxdisk(){
+#DES:List disk by vxdisk -o size
+local node
+node=$1
+out=`$SSH $node 'vxdisk -o alldgs,size list'`
+echo "$out"|awk ' $2 ~ /[0-9]+/ {print}'
+}
+
+getDiskDetail(){
+local disk disk_detail n node
+node=$1
+disk=$2
+out=`$SSH $node "vxdisk list $disk"`
+[ $? -ne 0 ] && echo "Failed to execute \"/opt/VRTS/bin/vxlist disk\"" && exit 1
+disk_detail=`echo "$out"|xargs -n 10000000000|sed -r "s/Device:/\nDevice:/g;"|grep -oP "(?<=Device: )\w+|(?<=udid: )[^ ]+|(?<=numpaths: )[0-9]+"`
+n=`echo "$disk_detail"|wc -l`
+if [ `echo "$n%3"|bc` -ne 0 ]
+then
+        echo "Failed in getting disk detail"
+        exit 1
+fi
+echo "$disk_detail"|xargs -n3
+}
+
+getDisk(){
+local node node1 i j encl exp_encl exp_cdsdisk exp_thin adisk adisk0 adisk1 opt disk_detail_node disk_detail_other disk_detail_node_disk
+node=$1
+opt=$2
+for node1 in $NODES
+do
+        $SSH $node1 "vxddladm set namingscheme=ebn persistence=yes" > /dev/null 2>&1
+	[ $? -ne 0 ] && echo "Failed to set namingscheme to ebn during executing \"vxddladm set namingscheme=ebn persistence=yes\"" && exit 1
+done
+out=`$SSH $node 'vxdmpadm listenclosure'`
+[ $? -ne 0 ] && echo "Failed to execute \"vxdmpadm listenclosure\"" && exit 1
+encl=`echo "$out"|grep -viP "ENCLR_NAME|===|disk|scsi"|awk '{print $1}'`
+#exclude FSS disks
+for i in $NODES
+do
+	j=`echo $i|cut -d . -f 1`
+	encl=`echo "$encl"|grep -v $j`
+done
+if [ -z "$encl" ]
+then
+        echo "Failed to get enclosure name"
+	exit 1
+else
+        exp_encl=`echo "$encl"|xargs -n100|sed -r "s/ /|^/g;s/^/^/"`
+fi
+#if need init invalid disk
+out=`$SSH $node 'vxdisk scandisks;vxdisk list'`
+disks=`echo "$out"|grep -P "$exp_encl"|grep -i online|grep -i invalid|awk '{print $1}'|grep -vP "^\s*$"|xargs -n10000`
+if [ -n "$disks" ]
+then
+        $SSH $node "for i in $disks;do /opt/VRTS/bin/vxdisksetup -if \$i;done"
+        out=`$SSH $node 'vxdisk scandisks;vxdisk list'`
+fi
+exp_cdsdisk=`echo "$out"|grep -i auto:cdsdisk|grep -i online|grep -vP "export|remote"|awk '{print $1}'|xargs -n10000|sed -r "s/ / |/g"`
+[ -z "$exp_cdsdisk" ] && echo "There is no disks with auto:cdsdisk layout" && exit 1
+exp_thin=`echo "$out"|grep -i auto:cdsdisk|grep -i online|grep -v export|grep thinrclm|awk '{print $1}'|xargs -n10000|sed -r "s/ / |/g"`
+[ -z "$exp_thin" ] && exp_thin=no_thin_disk
+adisk=`getDiskSizeDgByVxlist $node|grep -vP "^\s*$"` || exit 1
+#adisk=`getDiskSizeDgByVxdisk $node|grep -vP "^\s*$"` || exit 1
+[ -z "$adisk" ] && echo "Failed to get disk detail by vxlist" && exit 1
+adisk0=`echo "$adisk"|awk '$3=="-" {print $1 " " $2}'|grep -P "$exp_cdsdisk "|grep -vP "$exp_thin "|sort -k 2 -rn|awk '{print $0 " thick"}'`
+adisk1=`echo "$adisk"|awk '$3=="-" {print $1 " " $2}'|grep -P "$exp_cdsdisk "|grep -P "$exp_thin "|sort -k 2 -rn|awk '{print $0 " thin"}'`
+adisk=`echo -e "$adisk0\n$adisk1"|grep -v "^$"`
+if [ "$opt" = share ]
+then
+        disk_node_line=`echo "$adisk"|awk '{print $1}'|xargs -n1000000`
+        disk_detail_node=`getDiskDetail $node "$disk_node_line"` || exit 1
+        for i in `echo "$NODES"|sed "s/$node//g"`
+        do
+                out=`$SSH $i "vxdisk -o alldgs list"|grep -i auto:cdsdisk|grep -i online|grep -vP "export|remote"|awk '$4=="-"{print $1}'|xargs -n1000000`
+                disk_detail_other=`getDiskDetail $i "$out"` || exit 1
+                disk_detail_other=`echo "$disk_detail_other"|awk '{print $2}'|xargs -n100000|sed -r "s/ /|/g"`
+                disk_detail_node=`echo "$disk_detail_node"|awk '$2 ~ /'$disk_detail_other'/{print }'`
+		[ -z "$disk_detail_node" ] && exit 1
+        done
+        disk_detail_node_disk=`echo "$disk_detail_node"|awk '{print $1}'|xargs -n100000|sed -r "s/ /|/g"`
+        echo "$adisk"|awk '$1 ~ /'$disk_detail_node_disk'/{print }' > /tmp/adisk.$pid
+        echo "$disk_detail_node"|awk '{print $2 " " $3}' > /tmp/disk_detail_node.$pid
+        paste -d " " /tmp/adisk.$pid /tmp/disk_detail_node.$pid
+        rm -f /tmp/adisk.$pid /tmp/disk_detail_node.$pid
+else
+        echo "$adisk"
+fi
+}
+
+Usage(){
+cat << EOF 
+Usage:
+	getdisk node1[,node2,node3...] share|local
+EOF
+exit 1
+}
+
+clusnode=$1
+opt=$2
+
+for i in `echo $clusnode|sed "s/,/ /g"`
+do
+	[[ $i =~ ^[a-zA-Z]{1}[0-9a-zA-Z_-]*[0-9a-zA-Z]$ ]] || Usage
+done
+[ "$opt" = local -o "$opt" = share ] || Usage
+
+SSH="ssh -q -o ConnectTimeout=60 -o PasswordAuthentication=no"
+pid=$$
+NODES=`echo $1|sed "s/,/ /g"`
+NODE1=`echo $1|cut -d , -f 1`
+getDisk $NODE1 $opt
+exit 0

@@ -1,0 +1,60 @@
+2017-02-24 20:14:54    INFO Checking if nodes are wop-sshable....Passed!
+2017-02-24 20:14:55    INFO Checking if nodes belong to the same subnet....Passed!
+2017-02-24 20:14:57    INFO Checking if nodes belong to the same OS Type....Passed!
+2017-02-24 20:14:57    INFO Checking if nodes belong to the same kernel....Passed!
+2017-02-24 20:14:58    INFO Checking if the combination SUSE12 -- 121020 in support list....Passed!
+2017-02-24 20:15:00    INFO Copying scripts and files to Node "l109024"....Passed!
+2017-02-24 20:15:00    INFO Copying scripts and files to Node "l109025"....Passed!
+2017-02-24 20:15:01    INFO Checking if SF is installed on node "l109024"....Passed!
+2017-02-24 20:15:01    INFO Checking if SF is installed on node "l109025"....Passed!
+2017-02-24 20:15:01    INFO Configuring filesystem for Oracle Installation....Passed!
+2017-02-24 20:15:14    INFO     Creating oracle dg "oradg1429_dbarch"....Passed!
+2017-02-24 20:15:14    INFO     Creating oracle volume "dbdata"....Passed!
+2017-02-24 20:15:14    INFO     Mounting oracle volume "dbdata" on node "l109024"....Passed!
+2017-02-24 20:15:14    INFO     Creating oracle volume "archive"....Passed!
+2017-02-24 20:15:14    INFO     Mounting oracle volume "archive" on node "l109024"....Passed!
+2017-02-24 20:15:14    INFO Configuring required stuff and install required packages on node "l109024"....Passed!
+2017-02-24 20:15:29    INFO 	Creating Oracle User "oracle" with password "Oracle123" on the node "l109024"....Passed!
+2017-02-24 20:15:29    INFO 	Setting oracle user profile on the node "l109024"....Passed!
+2017-02-24 20:15:29    INFO 	Generating pub key for oracle user on the node "l109024"....Passed!
+2017-02-24 20:15:29    INFO 	Setting oracle user limits on the node "l109024"....Passed!
+2017-02-24 20:15:29    INFO 	Creating directory for oracle binary on the node "l109024"....Passed!
+2017-02-24 20:15:29    INFO 	Configruring kernel parameters on the node "l109024"....Passed!
+2017-02-24 20:15:29    INFO 	Checking if YUM or Zypper is configured on the node "l109024"....Passed!
+2017-02-24 20:15:29    INFO 	Installing required pakcages on the node "l109024"....Passed!
+2017-02-24 20:15:29    INFO 	Executing additional script on the node "l109024"....Passed!
+2017-02-24 20:15:29    INFO Configuring required stuff and install required packages on node "l109025"....Passed!
+2017-02-24 20:15:46    INFO 	Creating Oracle User "oracle" with password "Oracle123" on the node "l109025"....Passed!
+2017-02-24 20:15:46    INFO 	Setting oracle user profile on the node "l109025"....Passed!
+2017-02-24 20:15:46    INFO 	Generating pub key for oracle user on the node "l109025"....Passed!
+2017-02-24 20:15:46    INFO 	Setting oracle user limits on the node "l109025"....Passed!
+2017-02-24 20:15:46    INFO 	Creating directory for oracle binary on the node "l109025"....Passed!
+2017-02-24 20:15:46    INFO 	Configruring kernel parameters on the node "l109025"....Passed!
+2017-02-24 20:15:46    INFO 	Checking if YUM or Zypper is configured on the node "l109025"....Passed!
+2017-02-24 20:15:46    INFO 	Installing required pakcages on the node "l109025"....Passed!
+2017-02-24 20:15:46    INFO 	Executing additional script on the node "l109025"....Passed!
+2017-02-24 20:15:47    INFO Mounting oracle iamge to /oraimage on the node "l109024"....Passed!
+2017-02-24 20:15:48    INFO Mounting oracle iamge to /oraimage on the node "l109025"....Passed!
+2017-02-24 20:15:52    INFO Configuring oracle user equivalence....Passed!
+2017-02-24 20:15:52    INFO STEP 1:"DOENV:Setting up environment for Oracle SI Installation"....Passed!
+2017-02-24 20:15:52    INFO Installing database binnary to all nodes....Passed!
+2017-02-24 20:15:52    INFO     Mounting oracle installation log from the node "l109024"....Passed!
+2017-02-24 20:15:52    INFO     Mounting oracle installation log from the node "l109025"....Passed!
+2017-02-24 20:16:02    INFO     Installing database binary to l109024....100%
+2017-02-24 20:16:02    INFO     Installing database binary to l109025....100%
+2017-02-24 20:19:45    INFO     Umounting oracle installation log....Passed!
+2017-02-24 20:19:46    INFO     Running "/oracle/orahome/root.sh" on the node "l109025"....Passed!
+2017-02-24 20:19:49    INFO     Umounting oracle installation log....Passed!
+2017-02-24 20:19:50    INFO     Running "/oracle/orahome/root.sh" on the node "l109024"....Passed!
+2017-02-24 20:19:50    INFO STEP 2:"DODBBIN:Installing database binary for Oracle SI Installation"....Passed!
+2017-02-24 20:19:50    INFO Configuring Listener on all nodes....
+2017-02-24 20:19:54    INFO     Configuring Listener on the node "l109024"....Passed!
+2017-02-24 20:19:58    INFO     Configuring Listener on the node "l109025"....Passed!
+2017-02-24 20:19:58    INFO STEP 3:"DONETCA:Configuring Listener for Oracle SI Installation"....Passed!
+2017-02-24 20:19:58    INFO Creating database to all nodes....Passed!
+2017-02-24 20:19:58    INFO     Creating database on l109024....100%
+2017-02-24 20:25:42    INFO     Finishing oracle database settings on the node "l109024"....Passed!
+2017-02-24 20:25:44    INFO     Generating pfiles for the node "l109025"....Passed!
+2017-02-24 20:25:44    INFO STEP 4:"DODBCA:Creating database for Oracle SI Installation"....Passed!
+2017-02-24 20:25:44    INFO Congratulations!!! You have got Oracle SI installed on l109024,l109025!
+2017-02-24 20:25:44     END 

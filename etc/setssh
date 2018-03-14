@@ -1,0 +1,59 @@
+#!/bin/bash
+Usage(){
+cat << EOF
+
+Usage:
+	setssh host1[,host2,host3]
+
+EOF
+exit 1
+}
+setSSH(){
+local host file type output cmd
+host=$1
+file=/etc/ssh/sshd_config
+output=`ssh -q -o ConnectTimeout=60 $host "uname;cat $file"`
+type=`echo "$output"|sed -n 1p|cut -c 1`
+case $type in 
+	L)
+		cmd='which systemctl > /dev/null 2>&1 && systemctl restart sshd.service || service sshd restart'
+		;;
+	A)
+		cmd='stopsrc -s sshd;startsrc -s sshd'
+		;;
+	S)
+		cmd='svcadm restart svc:/network/ssh:default'
+esac
+echo "$output"|grep -vP "^#"|grep -P "(^|^\s+)UseDNS\s+no( |$)" > /dev/null 2>&1 || echo -e "UseDNS no\nGSSAPIAuthentication no"|ssh -q -o ConnectTimeout=60 $host "cat >> $file;echo 'options single-request-reopen' >> /etc/resolv.conf;$cmd"
+}
+getDuration(){
+local duration
+duration=`(time ssh -o PasswordAuthentication=no $host "hostname") 2>&1|grep real`
+[ $? -ne 0 ] && echo "ERROR.Failed to ssh $host without password!" && exit 1
+duration=`echo "$duration"|grep -oP "\d+(?=m)|(?<=m)\d+"|xargs -n2|sed -r "s/ /*60+/"|bc`
+if [[ $duration =~ ^[0-9]+$ ]]
+then
+	echo $duration
+else
+	echo "ERROR.Failed to get duration for ssh connecting $host"
+	exit 1
+fi
+}
+
+[ $# -ne 1 ] && Usage
+hosts=$1
+for host in `echo $hosts|sed "s/,/ /g"`
+do
+	duration=`getDuration` || exit 1
+	if [ $duration -gt 2 ]
+	then
+		echo "Optimizing ssh connection..."
+		setSSH $host
+	fi
+	duration=`getDuration` || exit 1
+	if [ $duration -gt 2 ]
+	then
+		echo "Failed to optimize ssh connection,it needs more than 2 seconds to do ssh connection.Please check \"ssh $host 'hostname'\""
+		exit 1
+	fi
+done

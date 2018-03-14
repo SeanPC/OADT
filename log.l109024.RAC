@@ -1,0 +1,75 @@
+2016-10-25 10:15:25    INFO Checking if nodes are wop-sshable....Passed!
+2016-10-25 10:15:26    INFO Checking if nodes belong to the same subnet....Passed!
+2016-10-25 10:15:29    INFO Checking if nodes belong to the same OS Type....Passed!
+2016-10-25 10:15:29    INFO Checking if nodes belong to the same kernel....Passed!
+2016-10-25 10:15:30    INFO Checking if the combination SUSE12 -- 121020 in support list....Passed!
+2016-10-25 10:15:30    INFO Checking if amount of SCANIP and VIP is right....Passed!
+2016-10-25 10:15:30    INFO Checking if SCANIP or VIP belong to subnet "10.200.109.0"....Passed!
+2016-10-25 10:16:00    INFO Checking if SCANIP or VIP are usable....Passed!
+2016-10-25 10:16:03    INFO Copying scripts and files to Node "l109024"....Passed!
+2016-10-25 10:16:04    INFO Copying scripts and files to Node "l109025"....Passed!
+2016-10-25 10:16:05    INFO Checking if CVM are online....Passed!
+2016-10-25 10:16:05    INFO Configuring filesystem for Oracle Installation....Passed!
+2016-10-25 10:16:17    INFO     Creating oracle dg "oradg2519_ocrvote"....Passed!
+2016-10-25 10:16:17    INFO     Creating oracle dg "oradg2519_dbarch"....Passed!
+2016-10-25 10:16:17    INFO     Creating oracle volume "ocrvote"....Passed!
+2016-10-25 10:16:17    INFO 	Mounting oracle volume "ocrvote" on node "l109024"....Passed!
+2016-10-25 10:16:17    INFO     Creating oracle volume "dbdata"....Passed!
+2016-10-25 10:16:17    INFO 	Mounting oracle volume "dbdata" on node "l109024"....Passed!
+2016-10-25 10:16:17    INFO     Creating oracle volume "archive"....Passed!
+2016-10-25 10:16:17    INFO 	Mounting oracle volume "archive" on node "l109024"....Passed!
+2016-10-25 10:16:17    INFO Configuring required stuff and install required packages on node "l109024"....Passed!
+2016-10-25 10:19:02    INFO 	Writting resolv stuff to hosts file on node "l109024"....Passed!
+2016-10-25 10:19:02    INFO 	Setting private ip for "eth1" with ipaddr "192.200.109.24/255.255.255.0" on node "l109024"....Passed!
+2016-10-25 10:19:02    INFO 	Creating Oracle User "oracle" with password "Oracle123" on the node "l109024"....Passed!
+2016-10-25 10:19:02    INFO 	Setting oracle user profile on the node "l109024"....Passed!
+2016-10-25 10:19:02    INFO 	Generating pub key for oracle user on the node "l109024"....Passed!
+2016-10-25 10:19:02    INFO 	Setting oracle user limits on the node "l109024"....Passed!
+2016-10-25 10:19:02    INFO 	Creating directory for oracle binary on the node "l109024"....Passed!
+2016-10-25 10:19:02    INFO 	Configruring kernel parameters on the node "l109024"....Passed!
+2016-10-25 10:19:02    INFO 	Checking if YUM or Zypper is configured on the node "l109024"....Passed!
+2016-10-25 10:19:02    INFO 	Installing required pakcages on the node "l109024"....Passed!
+2016-10-25 10:19:02    INFO 	Executing additional script on the node "l109024"....Passed!
+2016-10-25 10:19:02    INFO Configuring required stuff and install required packages on node "l109025"....Passed!
+2016-10-25 10:21:53    INFO 	Writting resolv stuff to hosts file on node "l109025"....Passed!
+2016-10-25 10:21:53    INFO 	Setting private ip for "eth1" with ipaddr "192.200.109.25/255.255.255.0" on node "l109025"....Passed!
+2016-10-25 10:21:53    INFO 	Creating Oracle User "oracle" with password "Oracle123" on the node "l109025"....Passed!
+2016-10-25 10:21:53    INFO 	Setting oracle user profile on the node "l109025"....Passed!
+2016-10-25 10:21:53    INFO 	Generating pub key for oracle user on the node "l109025"....Passed!
+2016-10-25 10:21:53    INFO 	Setting oracle user limits on the node "l109025"....Passed!
+2016-10-25 10:21:53    INFO 	Creating directory for oracle binary on the node "l109025"....Passed!
+2016-10-25 10:21:53    INFO 	Mounting oracle volume "ocrvote" on the node "l109025" ....Passed!
+2016-10-25 10:21:53    INFO 	Mounting oracle volume "dbdata" on the node "l109025" ....Passed!
+2016-10-25 10:21:53    INFO 	Mounting oracle volume "archive" on the node "l109025" ....Passed!
+2016-10-25 10:21:53    INFO 	Configruring kernel parameters on the node "l109025"....Passed!
+2016-10-25 10:21:53    INFO 	Checking if YUM or Zypper is configured on the node "l109025"....Passed!
+2016-10-25 10:21:53    INFO 	Installing required pakcages on the node "l109025"....Passed!
+2016-10-25 10:21:53    INFO 	Executing additional script on the node "l109025"....Passed!
+2016-10-25 10:21:54    INFO Mounting oracle iamge to /oraimage on the node "l109024"....Passed!
+2016-10-25 10:22:00    INFO Configuring oracle user equivalence....Passed!
+2016-10-25 10:22:00    INFO STEP 1:"DOENV:Setting up environment for Oracle RAC Installation"....Passed!
+2016-10-25 10:22:00    INFO Installing Grid binary....Passed!
+2016-10-25 10:22:01    INFO     Mounting oracle installation log from the node "l109024"....Passed!
+2016-10-25 10:22:15    INFO     Installing grid binary to l109024,l109025....100%
+2016-10-25 10:31:13    INFO     Umounting oracle installation log....Passed!
+2016-10-25 10:31:13    INFO STEP 2:"DOINSTGRID:Installing Grid binary for Oracle RAC Installation"....Passed!
+2016-10-25 10:31:13    INFO Configuring Grid Service....Passed!
+2016-10-25 10:31:13    INFO     Running "/orainst/oraInventory/orainstRoot.sh" on the node "l109024"....Passed!
+2016-10-25 10:31:14    INFO     Running "/orainst/oraInventory/orainstRoot.sh" on the node "l109025"....Passed!
+2016-10-25 10:38:21    INFO     Running "/crs/crshome/root.sh" on the node "l109024"....Passed!
+2016-10-25 10:42:26    INFO     Running "/crs/crshome/root.sh" on the node "l109025"....Passed!
+2016-10-25 10:42:26    INFO STEP 3:"DOSETGRID:Configuring Grid service for Oracle RAC Installation"....Passed!
+2016-10-25 10:42:26    INFO Installing database binnary to all nodes....Passed!
+2016-10-25 10:42:26    INFO     Mounting oracle installation log from the node "l109024"....Passed!
+2016-10-25 10:42:41    INFO     Installing database binary to l109024,l109025....100%
+2016-10-25 10:50:49    INFO     Umounting oracle installation log....Passed!
+2016-10-25 10:50:50    INFO     Running "/oracle/orahome/root.sh" on the node "l109024"....Passed!
+2016-10-25 10:50:51    INFO     Running "/oracle/orahome/root.sh" on the node "l109025"....Passed!
+2016-10-25 10:50:51    INFO STEP 4:"DODBBIN:Installing database binary for Oracle RAC Installation"....Passed!
+2016-10-25 10:50:51    INFO Creating database to all nodes....Passed!
+2016-10-25 10:50:51    INFO     Creating database on l109024,l109025....100%
+2016-10-25 11:00:22    INFO     Finishing oracle database settings on the node "l109024"....Passed!
+2016-10-25 11:01:44    INFO     Finishing oracle database settings on the node "l109025"....Passed!
+2016-10-25 11:01:44    INFO STEP 5:"DODBCA:Creating database for Oracle RAC Installation"....Passed!
+2016-10-25 11:01:44    INFO Congratulations!!! You have got Oracle RAC installed on l109024,l109025!
+2016-10-25 11:01:45     END 
